@@ -1,4 +1,8 @@
 #![deny(warnings)]
+#![feature(test)]
+
+extern crate test;
+
 use anyhow::Context;
 use std::fmt;
 use std::io;
@@ -283,6 +287,7 @@ impl Ka3005p {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use test::Bencher;
 
     #[test]
     fn test_channel1_status() {
@@ -354,5 +359,14 @@ mod tests {
             String::from(Command::Current(4.0)),
             "ISET1:4.000".to_string()
         );
+    }
+
+    #[bench]
+    fn bench_flags(b: &mut Bencher) {
+        b.iter(|| {
+            for f in 0..0xFF {
+                test::black_box(Flags::new(f));
+            }
+        })
     }
 }
