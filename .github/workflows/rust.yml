@@ -13,7 +13,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-     strategy:
+    strategy:
       matrix:
         os: [x86_64-pc-windows-gnu, x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl, arm-unknown-linux-musleabihf]
 
@@ -42,7 +42,8 @@ jobs:
       with:
         name: ka3005p-${{ matrix.os }}.exe
         path: target/${{ matrix.os }}/release/ka3005p.exe
-        - name: Upload binary
+
+    - name: Upload binary
       if: github.event_name == 'release' && matrix.os != 'x86_64-pc-windows-gnu'
       uses: actions/upload-release-asset@v1
       env:
