@@ -62,9 +62,6 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_content_type: application/octet-stream
 
-    - name: Run tests
-      run: cargo test --verbose
-
     - name: Lint
       uses: actions-rs/clippy-check@v1
       with:
@@ -72,3 +69,10 @@ jobs:
           name: clippy-${{ matrix.os }}
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-features --target ${{ matrix.os }}
+          
+    - name: Tests
+      uses: actions-rs/cargo@v1
+      with:
+          use-cross: true
+          command: test
+          args: --target ${{ matrix.os }} --verbose
